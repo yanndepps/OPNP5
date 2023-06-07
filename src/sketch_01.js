@@ -13,12 +13,12 @@ new p5();
 
 const settings = {
 	p5: true,
-	dimensions: [1024, 1024],
+	dimensions: [640, 640],
 	animate: false,
 	context: '2d',
 };
 
-const radius = 110;
+let radius;
 const numPartitions = 6;
 const palettes = [
 	["#007f5f", "#2b9348", "#55a630", "#80b918", "#aacc00",
@@ -38,7 +38,7 @@ const sketch = ({ width, height }) => {
 	wx = w;
 	wy = w;
 
-	let stemStr = floor(w * 0.003);
+	let stemStr = floor(w * 0.0035);
 	// console.log(stemStr);
 
 	palette = random(palettes);
@@ -50,15 +50,32 @@ const sketch = ({ width, height }) => {
 		strokeWeight(2);
 		drawBackgroundParticles();
 
+		push();
 		translate(wx / 2, wy / 4);
 		stroke(2);
 		strokeWeight(stemStr);
-
 		drawStem();
-		drawFlowerHead(context);
+		radius = 110;
+		drawFlowerHead(context, radius);
+		pop();
 
-		translate(0, wy / 1.76);
-		drawFlowerHead(context);
+		push();
+		translate(wx / 2, wy / 1.30);
+		stroke(2);
+		strokeWeight(stemStr);
+		// drawStem();
+		radius = 110;
+		drawFlowerHead(context, radius);
+		pop();
+
+		push();
+		translate(wx / 1.3, wy / 2);
+		stroke(2);
+		strokeWeight(stemStr);
+		// drawStem();
+		radius = 90;
+		drawFlowerHead(context, radius);
+		pop();
 	};
 };
 
@@ -96,7 +113,7 @@ function drawStem() {
 }
 
 // fn to draw petals
-function drawFlowerHead(context) {
+function drawFlowerHead(context, radius) {
 	// DRAW Center
 	fill(random(palette));
 	noStroke();
@@ -152,7 +169,7 @@ function drawFlowerHead(context) {
 	}
 
 	for (let n = 0; n < vertexArraysOutline.length; n++) {
-		drawingContext.setLineDash([random(2, 5), random(2, 5)]);
+		// drawingContext.setLineDash([random(2, 5), random(2, 5)]);
 		context.fillStyle = color(random(palette));
 		noFill();
 		stroke(0);
@@ -282,7 +299,7 @@ function roundedPoly(context, points, radiusAll) {
 // fn to draw particles on the side
 function drawBackgroundParticles() {
 	const padding = max(wx, wy) / 30;
-	const spacing = 5;
+	const spacing = 8;
 
 	const numX = int((wx - padding * 2) / spacing);
 	const numY = int((wy - padding * 2) / spacing);
@@ -291,7 +308,7 @@ function drawBackgroundParticles() {
 	const spcY = (wy - padding * 2) / numY;
 
 	noFill();
-	for (let x = padding; x < wx / 5; x += spcX) {
+	for (let x = padding; x < wx * 0.5; x += spcX) {
 		for (let y = padding; y < wy - padding + 0.1; y += spcY) {
 			stroke(random(palette));
 			strokeWeight(random(3));

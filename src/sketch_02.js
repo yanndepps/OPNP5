@@ -26,7 +26,7 @@ const settings = {
 	name: seed,
 };
 
-const radius = rnd.range(110, 140);
+let radius;
 const numPartitions = 6;
 
 const bgColor = rnd.pick(risoColors).hex;
@@ -49,20 +49,41 @@ const sketch = ({ width, height }) => {
 	wy = w;
 
 	angleMode(DEGREES);
+	// ---
 	return ({ context }) => {
 		background(bgColor);
 		strokeWeight(2);
 		drawBackgroundParticles();
 
+		// flower 01
+		push();
 		translate(wx / 2, wy / 3);
 		stroke(2);
 		strokeWeight(dim * 0.003);
-
 		drawStem();
-		drawFlowerHead(context);
+		radius = rnd.range(90, 110);
+		drawFlowerHead(context, radius);
+		pop();
 
-		// translate(0, wy / 1.90);
-		// drawFlowerHead(context);
+		// flower 02
+		push();
+		translate(wx / 3, wy / 1.30);
+		stroke(2);
+		strokeWeight(dim * 0.003);
+		drawStem();
+		radius = rnd.range(65, 100);
+		drawFlowerHead(context, radius);
+		pop();
+
+		// flower 03
+		push();
+		translate(wx / 1.25, wy / 1.80);
+		stroke(2);
+		strokeWeight(dim * 0.003);
+		drawStem();
+		radius = rnd.range(75, 100);
+		drawFlowerHead(context, radius);
+		pop();
 	};
 };
 
@@ -76,8 +97,7 @@ function drawStem() {
 	// positions curvevertex positions and stores them in an array
 	beginShape();
 	for (let y = 0; y < (wy / 3) * 2; y += spacing) {
-		// let randOfst = random(-15, 15);
-		let randOfst = rnd.range(-15, 15);
+		let randOfst = rnd.range(-5, 5);
 		curveVertex(randOfst, y);
 
 		curveVertices.push([randOfst, y]);
@@ -94,14 +114,14 @@ function drawStem() {
 	for (let t = 0; t < 3; t++) {
 		beginShape();
 		for (let c = 0; c < curveVertices.length; c++) {
-			curveVertex(curveVertices[c][0] + t + rnd.value(3), curveVertices[c][1]);
+			curveVertex(curveVertices[c][0] + t + rnd.value() * 3, curveVertices[c][1]);
 		}
 		endShape();
 	}
 }
 
 // fn to draw petals
-function drawFlowerHead(context) {
+function drawFlowerHead(context, radius) {
 	// DRAW Center
 	fill(rnd.pick(palettes).hex);
 	noStroke();
