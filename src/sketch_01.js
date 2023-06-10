@@ -72,7 +72,7 @@ const sketch = ({ width, height }) => {
 		translate(wx / 1.3, wy / 2);
 		stroke(2);
 		strokeWeight(stemStr);
-		// drawStem();
+		drawStem();
 		radius = 90;
 		drawFlowerHead(context, radius);
 		pop();
